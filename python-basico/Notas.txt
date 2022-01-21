@@ -1,0 +1,14 @@
+# cambiar una cadena a mayúsculas
+texto.upper()
+
+# cambiar la primera letra a mayúsculas
+texto.capitalize()
+
+# cambiar todo el texto a minúsculas
+texto.lower()
+
+# Eliminar espacios en blanco sobrantes al inicio o al final
+texto.strip()
+
+#reemplazar un caracter específico del todo el texto
+texto.replace('caracterObjetivo', 'caracterDeReemplazo')
