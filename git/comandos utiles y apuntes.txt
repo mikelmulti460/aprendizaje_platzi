@@ -1,0 +1,92 @@
+#Añade un nuevo commit con todos los archivos
+git commit -am
+
+#cambia de rama (branch)
+git checkout rama
+
+#muestra las ramas existentes
+git branch
+
+#fusiona la rama seleccionada a tu rama actual
+git merge RamaSelect -m "mi commit"
+
+#crea claves SSH para github con tu correo usado en la cuenta
+ssh-keygen -t rsa -b 4096 -C "mikelenrique@hotmail.com"
+
+#verifica si el servicio de llaves ssh está funcionando
+eval $(ssh-agent -s)
+
+#añade tus llaves ssh al entorno
+ssh-add ~/.ssh/id_rsa
+
+#añade el repositorio remoto a la configuracion local
+git remote add origin https://github.com/usuario/proyecto.git
+
+#modifica el enlace al repositorio remoto
+git remote set-url origin git@github.com:usuario/proyecto.git
+
+#comando para fusionar las los repos con commits no relacionados
+git pull origin main --allow-unrelated-histories
+
+#mejora los logs visualmente
+git log --all --graph --decorate --oneline
+
+#crea una etiqueta para los releases (lanzamientos de versiones)
+git tag -a v0.1 -m "Primera version"
+
+#sube las versiones a remoto
+git push origin --tags
+
+#remueve la etiqueta local
+git tag -d v0.1
+
+#remueve la etiqueta remota
+git push origin :refs/tags/v0.1
+
+#tener múltiples orígenes de repositorios
+git remote add NOMBRE_REFERENCIAL_DE_LA_FUENTE https://github.com/user/proyecto
+
+#mantener cambios en stash (como una papelera que se puede recuperar)
+git stash 
+
+#mostrar stash
+git stash list
+
+#regresar lo que está en stash
+git stash pop
+
+#mover el stash a una rama (puede ser nueva)
+git stash branch NOMBRE_RAMA
+
+#borrar stash
+git stash drop
+
+#limpiar archivos que sé que no necesito (no incluye los gitignore)
+git clean --dry-run (esa es la simulación)
+git clean -f (borra lo de la simulación)
+
+#traer commits específicos desde otras ramas (eso se hace desde la rama destino)
+git cherry-pick CODIGOCOMMIT (usar con cuidado)
+
+#enmendar el últmo commit
+git commit --amend 
+
+#regresar a un punto
+git reflog (historia totalmente completa)
+git reset (--soft (mantiene el staging) o --hard) (HEAD@{NumcabeceraEnReflog} o IdCommit)
+
+#buscar palabras en código
+git grep (-n para la línea exacta) (-c cantidad de veces) "PALABRA"
+
+#busca palabras en los commits
+git log -S "palabra"
+
+#agregar alias en git
+git config --global alias.mialias "comando"
+
+#ver quien hizo cambios en cada línea
+git blame archivo (líneas en específico: -L#origen,#final)
+
+#ver ramas remotas
+git branch -r (-a incluye también locales)
+
