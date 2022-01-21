@@ -12,3 +12,7 @@ texto.strip()
 
 #reemplazar un caracter específico del todo el texto
 texto.replace('caracterObjetivo', 'caracterDeReemplazo')
+
+#contar cantidad de caracteres
+len(texto)
+
