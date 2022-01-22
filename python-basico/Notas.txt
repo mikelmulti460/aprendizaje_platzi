@@ -16,3 +16,13 @@ texto.replace('caracterObjetivo', 'caracterDeReemplazo')
 #contar cantidad de caracteres
 len(texto)
 
+
+
+###Listas###
+#agregar elementos a las listas
+milista.append(dato)
+
+#quitar elementos a las listas
+milista.pop(indice)
+
+
