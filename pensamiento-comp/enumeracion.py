@@ -6,7 +6,7 @@ i=0
 
 while i <= iteraciones:
     respuesta = (objetivo/(2*(respuesta))+((respuesta)/2))
-    
+    print(respuesta)
     i+=1
 
 print (respuesta)
