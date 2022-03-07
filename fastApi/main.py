@@ -1,8 +1,11 @@
 #Python
 from typing import Optional
+from enum import Enum
+
 
 #Pydantic
 from pydantic import BaseModel
+from pydantic import Field
 
 #FastApi
 from fastapi import FastAPI, Body, Path, Query
@@ -11,13 +14,37 @@ app = FastAPI()
 
 #Models
 
-class Person(BaseModel):
-    first_name: str
-    last_name: str
-    age: int
-    hair_color: Optional[str] = None
-    is_married: Optional[bool] = None
+class HairColor(Enum):
+    """Heir colors"""
+    white = 'white'
+    brown = 'brown'
+    black = 'black'
+    blonde = 'blonde'
+    red = 'red'
 
+class Person(BaseModel):
+    first_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=60,
+        )
+    last_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=60,
+        )
+    age: int = Field(
+        ...,
+        gt=0,
+        le=115,
+    )
+    hair_color: Optional[HairColor] = Field(default=None)
+    is_married: Optional[bool] = Field(default=None)
+
+class Location(BaseModel):
+    city: str
+    state: str
+    country: str
 
 @app.get('/')
 def home():
@@ -58,3 +85,20 @@ def show_person(
     )
 ):
     return {person_id: "It exist!"}
+
+#Validations: Request body
+
+@app.put('/person/{person_id}')
+def update_person(
+    person_id: int = Path(
+        ...,
+        title='Person ID',
+        description='This is the person ID',
+        gt=0
+    ),
+    person: Person = Body(...),
+    location: Location = Body(...),
+):
+    results = person.dict()
+    results.update(location)
+    return results
