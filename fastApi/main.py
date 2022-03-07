@@ -8,7 +8,9 @@ from pydantic import BaseModel
 from pydantic import Field
 
 #FastApi
-from fastapi import FastAPI, Body, Path, Query
+from fastapi import FastAPI
+from fastapi import Body, Path, Query
+from fastapi import status
 
 app = FastAPI()
 
@@ -40,6 +42,7 @@ class Person(BaseModel):
     )
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
+    password: str = Field(..., min_length=8)
 
     class Config:
         schema_extra = {
@@ -48,7 +51,8 @@ class Person(BaseModel):
                 "last_name" : "Aranda",
                 "age": 21,
                 "hair_color": "black",
-                "is_maried": False
+                "is_maried": False,
+                "password": "dadadada"
             }
         }
 
@@ -69,19 +73,30 @@ class Location(BaseModel):
         max_length=50
     )
 
-@app.get('/')
+@app.get(
+    path='/',
+    status_code=status.HTTP_200_OK
+    )
 def home():
     return {"Hello": "World"}
 
 # Request and response Body
 
-@app.post('/person/new')
+@app.post(
+    path='/person/new', 
+    response_model=Person, 
+    response_model_exclude={'password'},
+    status_code=status.HTTP_201_CREATED
+    )
 def create_person(person: Person = Body(...)):
     ''' This function create new person in API data '''
     return person
 
 #validations: Query Parameters
-@app.get("/person/detail")
+@app.get(
+    path="/person/detail",
+    status_code=status.HTTP_200_OK
+    )
 def show_person(
     name:Optional[str] = Query(
         None,
@@ -100,7 +115,12 @@ def show_person(
 
 #Validations: Path Parameters
 
-@app.get('/person/detail/{person_id}')
+@app.get(
+    path='/person/detail/{person_id}',
+    response_model=Person,
+    response_model_exclude={'password'},
+    status_code=status.HTTP_200_OK
+    )
 def show_person(
     person_id: int = Path(
         ...,
@@ -111,7 +131,11 @@ def show_person(
 
 #Validations: Request body
 
-@app.put('/person/{person_id}')
+@app.put(
+    path='/person/{person_id}',
+    response_model=Person,
+    status_code=status.HTTP_200_OK
+    )
 def update_person(
     person_id: int = Path(
         ...,
