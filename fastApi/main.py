@@ -1,15 +1,16 @@
 #Python
+from email import message
 from typing import Optional
 from enum import Enum
 
 
 #Pydantic
 from pydantic import BaseModel
-from pydantic import Field
+from pydantic import Field, EmailStr
 
 #FastApi
 from fastapi import FastAPI
-from fastapi import Body, Path, Query
+from fastapi import Body, Path, Query, Form, Header, Cookie
 from fastapi import status
 
 app = FastAPI()
@@ -72,6 +73,11 @@ class Location(BaseModel):
         min_length=1,
         max_length=50
     )
+
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example = "pandita451")
+    password: str = Field(..., min_length=8, example = "dadadada")
+    message: str = Field(default='Login Succesfully!')
 
 @app.get(
     path='/',
@@ -149,3 +155,43 @@ def update_person(
     results = person.dict()
     results.update(location)
     return results
+
+@app.post(
+    path='/login',
+    response_model=LoginOut,
+    response_model_exclude={'password'},
+    status_code=status.HTTP_200_OK,
+    )
+def login(
+    username: str = Form(...),
+    password: str = Form(...)
+    ):
+    """Login function from frontend"""
+    return LoginOut(username=username,password=password)
+
+# Cookies and Headers Parameters
+@app.post(
+    path='/contact',
+    status_code=status.HTTP_200_OK
+)
+def contact(
+    fist_name : str = Form(
+        ...,
+        max_length=60,
+        min_length=1
+    ),
+    last_name : str = Form(
+        ...,
+        max_length=60,
+        min_length=1
+    ),
+    email : EmailStr = Form(...),
+    message: str = Form(
+        ...,
+        min_length=20
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+
+):
+    return user_agent
