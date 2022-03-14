@@ -3,13 +3,13 @@ from email import message
 from typing import Optional
 from enum import Enum
 
-
 #Pydantic
 from pydantic import BaseModel
 from pydantic import Field, EmailStr
 
 #FastApi
 from fastapi import FastAPI
+from fastapi import HTTPException
 from fastapi import Body, Path, Query, Form, Header, Cookie, File , UploadFile
 from fastapi import status
 
@@ -121,18 +121,27 @@ def show_person(
 
 #Validations: Path Parameters
 
+
+
 @app.get(
     path='/person/detail/{person_id}',
-    response_model=Person,
-    response_model_exclude={'password'},
+    #response_model=Person,
+    #response_model_exclude={'password'},
     status_code=status.HTTP_200_OK
     )
 def show_person(
     person_id: int = Path(
         ...,
         gt=0,
+        example=123
     )
 ):
+    persons = [1,2,3,4,5,6,7,8]
+    if person_id not in persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="!This person doesn't exist!"
+        )
     return {person_id: "It exist!"}
 
 #Validations: Request body
@@ -207,3 +216,4 @@ def post_image(
         "Format": image.content_type,
         "Size(kb)": round(len(image.file.read())/1024, 2)
     }
+
