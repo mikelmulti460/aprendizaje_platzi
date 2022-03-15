@@ -81,7 +81,8 @@ class LoginOut(BaseModel):
 
 @app.get(
     path='/',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Home']
     )
 def home():
     return {"Hello": "World"}
@@ -92,7 +93,8 @@ def home():
     path='/person/new', 
     response_model=Person, 
     response_model_exclude={'password'},
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    tags=['Persons']
     )
 def create_person(person: Person = Body(...)):
     ''' This function create new person in API data '''
@@ -101,7 +103,8 @@ def create_person(person: Person = Body(...)):
 #validations: Query Parameters
 @app.get(
     path="/person/detail",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Persons']
     )
 def show_person(
     name:Optional[str] = Query(
@@ -120,14 +123,12 @@ def show_person(
     return {name: age}
 
 #Validations: Path Parameters
-
-
-
 @app.get(
     path='/person/detail/{person_id}',
     #response_model=Person,
     #response_model_exclude={'password'},
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Persons']
     )
 def show_person(
     person_id: int = Path(
@@ -145,11 +146,11 @@ def show_person(
     return {person_id: "It exist!"}
 
 #Validations: Request body
-
 @app.put(
     path='/person/{person_id}',
     response_model=Person,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Persons']
     )
 def update_person(
     person_id: int = Path(
@@ -170,6 +171,7 @@ def update_person(
     response_model=LoginOut,
     response_model_exclude={'password'},
     status_code=status.HTTP_200_OK,
+    tags=['Persons']
     )
 def login(
     username: str = Form(...),
