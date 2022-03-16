@@ -94,7 +94,8 @@ def home():
     response_model=Person, 
     response_model_exclude={'password'},
     status_code=status.HTTP_201_CREATED,
-    tags=['Persons']
+    tags=['Persons'],
+    summary="Create person in the app"
     )
 def create_person(person: Person = Body(...)):
     ''' This function create new person in API data '''
@@ -104,7 +105,8 @@ def create_person(person: Person = Body(...)):
 @app.get(
     path="/person/detail",
     status_code=status.HTTP_200_OK,
-    tags=['Persons']
+    tags=['Persons'],
+    deprecated=True
     )
 def show_person(
     name:Optional[str] = Query(
