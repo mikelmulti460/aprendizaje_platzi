@@ -6,3 +6,4 @@ curso-POO/uber-project/python/__pycache__/car.cpython-310.pyc
 curso-POO/uber-project/python/__pycache__/uberBlack.cpython-310.pyc
 *.exe
 *.pyc
+node_modules/
